@@ -20,16 +20,18 @@ class location(db.Model):
     city = db.Column('city', db.String(100))
     state = db.Column('state', db.String(100))
     zip = db.Column('zip', db.String(100))
-    coordinate = db.Column('coordinate', db.String(100))
+    lat = db.Column('lat', db.String(100))
+    longitude = db.Column('longitude', db.String(100))
 
     def __init__(self, name, address, city, state, zip,
-                 coordinate):
+                 lat, longitude):
         self.name = name
         self.address = address
         self.city = city
         self.state = state
         self.zip = zip
-        self.coordinate = coordinate
+        self.lat = lat
+        self.longitude = longitude
 
 
 def createDB():
@@ -61,8 +63,10 @@ def create():
     # TODO use component filtering if zip available
     coordinate = googleMaps.getCoordinates(address + ", " + city + ", " + state + " &postalCode=" + zip)
     print (coordinate)
+    lat = str(coordinate['lat'])
+    longitude = str(coordinate['lng'])
 
-    loc = location(name, address, city, state, zip, coordinate)
+    loc = location(name, address, city, state, zip, lat=lat, longitude=longitude)
     db.session.add(loc)
     db.session.commit()
     resp = {
@@ -72,7 +76,11 @@ def create():
         "city": loc.city,
         "state": loc.state,
         "zip": loc.zip,
-        "coordinate": json.loads(loc.coordinate)
+        "coordinate": {
+            "lat": loc.lat,
+            "longitude": loc.longitude
+        }
+
     }
 
     return Response(response=json.dumps(resp), status=201, mimetype='application/json')
@@ -89,7 +97,8 @@ def queryDB(locationId):
         "city": loc.city,
         "state": loc.state,
         "zip": loc.zip,
-        "coordinate": json.loads(loc.coordinate)
+        "lat": loc.lat,
+        "longitude": loc.longitude
     }
     return Response(response=json.dumps(resp), status=200, mimetype="application/json")
 
