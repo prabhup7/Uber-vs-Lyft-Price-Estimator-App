@@ -21,24 +21,9 @@ def create(arg_body=None):
         body = arg_body
     # TODO: clean user inputs
     # @arun: make address field mandatory
-    name = body['name']
-    address = body['address']
-    zip = None
-    if 'zip' in body:
-        zip = body['zip']
 
-    coordinate = None
-    if zip is not None:
-        coordinate = googleMaps.getCoordinates(address + " &postalCode=" + zip)
-    else:
-        coordinate = googleMaps.getCoordinates(address)
-    print (coordinate)
-    lat = str(coordinate['lat'])
-    longitude = str(coordinate['lng'])
+    loc = persist(body)
 
-    loc = location(name, address, latitude=lat, longitude=longitude)
-    db.session.add(loc)
-    db.session.commit()
     resp = {
         "id": loc.id,
         "name": loc.name,
@@ -92,3 +77,29 @@ def handleDelete(locationId):
     db.session.delete(loc)
     db.session.commit()
     return Response(status=204)
+
+
+def persist(body):
+    name = body['name']
+    address = body['address']
+    zip = None
+    if 'zip' in body:
+        zip = body['zip']
+
+    coordinate = None
+    if zip is not None:
+        coordinate = googleMaps.getCoordinates(address + " &postalCode=" + zip)
+    else:
+        coordinate = googleMaps.getCoordinates(address)
+    print (coordinate)
+    lat = str(coordinate['lat'])
+    longitude = str(coordinate['lng'])
+
+    if zip is not None:
+        loc = location(name, address, zip=zip, latitude=lat, longitude=longitude)
+    else:
+        loc = location(name, address, latitude=lat, longitude=longitude)
+
+    db.session.add(loc)
+    db.session.commit()
+    return loc
