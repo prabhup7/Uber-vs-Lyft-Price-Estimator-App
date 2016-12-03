@@ -1,6 +1,7 @@
-import os
-import requests
 import json
+import os
+
+import requests
 
 #url = 'https://sandbox-api.uber.com/v1.2/estimates/price'
 url = 'https://api.uber.com/v1.2/estimates/price'

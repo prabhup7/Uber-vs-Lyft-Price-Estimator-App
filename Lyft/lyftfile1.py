@@ -1,16 +1,14 @@
-import locationApp
-from locationApp import *
-import requests
-import json
 import itertools
-import a2m.itertools
-import even_more_itertools
+
+import requests
 from a2m.itertools import *
+from db_and_common.init_app import *
+
 #2control over here
 
 
 
-r = db.engine.execute('select lat from location')
+r = db.engine.execute('select latitude from location')
 r2 = db.engine.execute('select longitude from location')
 
 number_of_places = 6
@@ -20,7 +18,7 @@ latitudes = []
 longitude = []
 
 for i in r:
-    start_lat = str(i['lat'])
+    start_lat = str(i['latitude'])
     latitudes.append(start_lat)
     #print "hi"
     #print start_lat
