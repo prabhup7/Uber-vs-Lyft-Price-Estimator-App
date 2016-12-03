@@ -25,7 +25,7 @@ def parse_and_forward():
         "others": [],
         "end": ""
     }
-    # TODO do startand end location outside the loop
+
     while (request.args.get('Location ' + (str(i))) is not None):
         print "Location " + (str(i)) + ": " + request.args.get('Location ' + (str(i)))
         name = "Location " + (str(i))
@@ -40,12 +40,14 @@ def parse_and_forward():
         loc_id = '/v1/locations/' + str(loc.id)
         if i == 0:
             trip['start'] = loc_id
+        else:
+            trip['others'].append(loc_id)
         trip['end'] = loc_id
-        trip['others'].append(loc_id)
         i += 1
-    # call prabhu's API
+    trip['others'].pop()
     print trip
     trip_json = json.dumps(trip)
-    requests.post(BASE_URI + '/trips', json=trip_json)
+    # call prabhu's API
+    requests.post(BASE_URI + '/trips', json=trip_json)  # or replace with direct functin call
     return "Hello from locationApp, Gurnoor<br/> Query: " + request.query_string + \
            "<br/> location 0: " + request.args.get('Location 0')
