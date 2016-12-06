@@ -1,46 +1,35 @@
 {
-  "id": 200000,
-  "start": {
-    "coord": {
-      "latitude": 190401.235,
-      "longitude": 49.44
-    },
-    "address": "/locations/12345 address"
-  },
   "best_route_by_costs": [
     {
-      "coord": {
-        "latitude": 190401.235,
-        "longitude": 49.44
-      },
+      "latitude": 190401.235,
+      "longitude": 49.44,
       "address": "/locations/12345 address"
     },
     {
-      "coord": {
-        "latitude": 190401.235,
-        "longitude": 49.44
-      },
+      "latitude": 190401.235,
+      "longitude": 49.44,
       "address": "/locations/12345 address"
     },
     {
-      "coord": {
-        "latitude": 190401.235,
-        "longitude": 49.44
-      },
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address"
+    },
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address"
+    },
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
       "address": "/locations/12345 address"
     }
   ],
-  "end": {
-    "coord": {
-      "latitude": 190401.235,
-      "longitude": 49.44
-    },
-    "address": "/locations/12345 address"
-  },
   "providers": [
     {
-      "name": "Uber",
-      "total_costs_by_cheapest_car_type": 125,
+      "name": "UberX",
+      "cost": 125,
       "currency_code": "USD",
       "total_duration": 640,
       "duration_unit": "minute",
@@ -49,9 +38,18 @@
     },
     {
       "name": "Lyft",
-      "total_costs_by_cheapest_car_type": 110,
+      "cost": 110,
       "currency_code": "USD",
       "total_duration": 620,
+      "duration_unit": "minute",
+      "total_distance": 25.05,
+      "distance_unit": "mile"
+    },
+    {
+      "name": "UberXL",
+      "cost": 125,
+      "currency_code": "USD",
+      "total_duration": 640,
       "duration_unit": "minute",
       "total_distance": 25.05,
       "distance_unit": "mile"
