@@ -1,0 +1,118 @@
+{
+  "best_route_by_costs": [
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address",
+      "weather": {},
+      "top_crime": [
+        "street1",
+        "street2"
+      ],
+      "popular_spots": [
+        {
+          "name": "beach",
+          "link": "http://lonelyplanet.com/beach"
+        }
+      ]
+    },
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address"
+    },
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address"
+    },
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address"
+    },
+    {
+      "latitude": 190401.235,
+      "longitude": 49.44,
+      "address": "/locations/12345 address"
+    }
+  ],
+  "providers": [
+    {
+      "name": "UberX",
+      "cost": 125,
+      "currency_code": "USD",
+      "total_duration": 640,
+      "duration_unit": "minute",
+      "total_distance": 25.05,
+      "distance_unit": "mile"
+    },
+    {
+      "name": "Lyft",
+      "cost": 110,
+      "currency_code": "USD",
+      "total_duration": 620,
+      "duration_unit": "minute",
+      "total_distance": 25.05,
+      "distance_unit": "mile"
+    },
+    {
+      "name": "UberXL",
+      "cost": 125,
+      "currency_code": "USD",
+      "total_duration": 640,
+      "duration_unit": "minute",
+      "total_distance": 25.05,
+      "distance_unit": "mile"
+    },
+    {
+      "name": "Uber, VTA, tram",
+      "cost": 50,
+      "currency_code": "USD",
+      "total_duration": 800,
+      "duration_unit": "minute",
+      "total_distance": 30.05,
+      "distance_unit": "mile",
+      "legs": [
+        {
+          "name": "Uber",
+          "cost": 15,
+          "currency_code": "USD",
+          "total_duration": 20,
+          "duration_unit": "minute",
+          "total_distance": 10.05,
+          "distance_unit": "mile",
+          "start": {
+            "latitude": 190401.235,
+            "longitude": 49.44,
+            "address": "/locations/12345 address"
+          },
+          "end": {
+            "latitude": 190401.235,
+            "longitude": 49.44,
+            "address": "/locations/12345 address"
+          }
+        },
+        {
+          "name": "VTA",
+          "cost": 2.5,
+          "currency_code": "USD",
+          "total_duration": 80,
+          "duration_unit": "minute",
+          "total_distance": 30.05,
+          "distance_unit": "mile",
+          "start": {
+            "latitude": 190401.235,
+            "longitude": 49.44,
+            "address": "/locations/12345 address"
+          },
+          "end": {
+            "latitude": 190401.235,
+            "longitude": 49.44,
+            "address": "/locations/12345 address"
+          }
+        }
+      ]
+    }
+  ]
+}
