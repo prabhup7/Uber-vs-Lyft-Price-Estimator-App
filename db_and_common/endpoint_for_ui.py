@@ -1,8 +1,8 @@
-import requests
 from flask import request, json
 from flask_sqlalchemy import SQLAlchemy
 
 import location_api.location_app
+import trip_planner.planner
 from db_and_common import app
 
 # from db_and_common.__init__ import location
@@ -47,7 +47,9 @@ def parse_and_forward():
     trip['others'].pop()
     print trip
     trip_json = json.dumps(trip)
+
     # call prabhu's API
-    requests.post(BASE_URI + '/trips', json=trip_json)  # or replace with direct functin call
+    # requests.post(BASE_URI + '/trips', json=trip_json)  # or replace with direct functin call
+    trip_planner.planner.plan(trip_json)
     return "Hello from locationApp, Gurnoor<br/> Query: " + request.query_string + \
            "<br/> location 0: " + request.args.get('Location 0')
