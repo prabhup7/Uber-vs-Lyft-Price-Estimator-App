@@ -51,7 +51,7 @@ routelist4 = []
 routelist5 = []
 
 routelist6 = []
-
+#---------------------------------------------------------printing the possible routes
 print"The possible routes are:-"
 
 for i in range(0,3):
@@ -92,7 +92,7 @@ routelist6.insert(len(routelist6),originallist[len(originallist)-1])
 print routelist6
 
 
-
+#--------------------------------------Taking into consideration all routes for estimated costs
 print("Considering route1")
 print routelist1
 p1 =  estimate_cost[0]+estimate_cost[5]+estimate_cost[10]+estimate_cost[15]
