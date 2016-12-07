@@ -4,6 +4,7 @@ import inspect
 import requests
 import json
 
+#sample inputs
 data2 = ('optimized route coordinates', [[u'37.7917618', u'-122.3943405'], [u'37.3357192', u'-121.8867076'], [u'37.3253266', u'-121.9453801'], [u'37.4163855', u'-121.897841'], [u'37.3255349', u'-121.8133811']])
 #data1 = ('optimized route coordinates', [[37.7917618, -122.3943405], [37.3357192, -121.8867076], [37.3253266, -121.9453801], [37.4163855, -121.897841], [37.3255349, -121.8133811]])
 
@@ -11,8 +12,8 @@ data2 = ('optimized route coordinates', [[u'37.7917618', u'-122.3943405'], [u'37
 
 
 
-
-def generate_lyft_report(data1):
+#function to find out the lowest estimated costs,distance in miles and duration in minutes for the best route(considering data1 to be the output of the best route in this case)
+def generate_lyft_report1(data1):
     a = len(data1[1])
     cost = []
     total_distance = []
@@ -190,5 +191,5 @@ def generate_lyft_report(data1):
 
     print finalresult
 
-
-generate_lyft_report(data2)
+#calling the function
+generate_lyft_report1(data2)
