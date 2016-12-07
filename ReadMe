@@ -1,0 +1,36 @@
+PURPOSE
+-----------
+In this project,we are basically finding the most optimized route between a set of locations entered by the user for both Uber and Lyft
+
+
+BASIC PARTS IMPLEMENTED
+------------
+
+1.UI
+-------
+This includes the User-interface part which initially asks the user to enter the number and address of the locations he/she wants to visit.
+And based on the inputs the best route,weather details about the locations and map representation is displayed.
+
+
+2.DATABASE
+-----------
+Once the user posts the locations,the database and tables get created and the location details get added to it which are then fetched by functions
+using lyft and uber api's for finding the best route.
+
+
+3.a UBER/LYFT
+--------------
+Implementation of this part includes functions which find the possible combinations of routes among the set of entered places and finally returns 
+the most optimized route for the user based on cheapest costs.We also tried implementing many other algorithms like Djkstras algorithm,
+travelling salesman problem,brute-force method etc
+
+
+
+4.FLOW
+-----
+Step1:User enters the details of the number and address of the locations
+Step2:The server is made up and running
+Step3:Then the database and tables are being created using flask and sqlalchemy
+Step4:When the user enters the locations,the details are getting stored in the Database
+Step5:Lyft/Uber functions calculate the distance and duration between the locations of the possible routes using google Api and 
+return the most optimized path for the user based on cheapest costs.
