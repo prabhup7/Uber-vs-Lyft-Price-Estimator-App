@@ -190,6 +190,7 @@ def generate_lyft_report1(data1):
     finalresult["providers"][2]["total_distance"] = totdist3
 
     print finalresult
+    return finalresult
 
 #calling the function
 generate_lyft_report1(data2)
