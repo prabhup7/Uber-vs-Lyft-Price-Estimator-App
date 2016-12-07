@@ -8,6 +8,7 @@ import location_api.location_app
 from db_and_common.model import location
 
 LYFT_BASE = "https://api.lyft.com/v1/cost"
+MAX_TRIES = 3
 
 places = []
 lat_dict = {}
@@ -68,14 +69,27 @@ def getfromdb(source, dest, waypoints_list):
         places_dict[dest]['longitude']) + '&waypoints=optimize:true|' + str(str2)
     print city
     url_waypoints = 'https://maps.googleapis.com/maps/api/directions/json?' + city + '&key=AIzaSyD6OzDVE_s67_JmJvfPHi28XDj8hLhaWMk'
-    waypoints_response = requests.get(url_waypoints)
-    print "way points route ++++++++++++++++++++++++++++++++++"
-    print json.dumps(waypoints_response.json())
+
+    tries = 0
+    while 1:
+        waypoints_response = requests.get(url_waypoints)
+        print "way points route ++++++++++++++++++++++++++++++++++"
+        print json.dumps(waypoints_response.json())
+        if len(waypoints_response.json()['routes']) == 0:
+            if tries < MAX_TRIES:
+                print "No routes received. Trying again."
+                tries += 1
+                continue
+            else:
+                print "Google returned no route. Max tries reached."
+                return []
+        else:
+            break
 
     waypoints_response1 = waypoints_response.json()['routes'][0]['waypoint_order']
+
     # waypoints_response1= waypoints_response.json()['routes'][0]
     print "way point response1", waypoints_response1
-
     sorted_waypoint = []
 
     # lat_list.insert(0,places_dict[source]['latitude'])
