@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 def parse_and_forward():
     """Parses the parameters in query string
     and posts corresponding request(s) to /v1/location (inside location_api.location_app)"""
-    i = 0
+    i = 1
     body = {}
 
     start = None
@@ -26,6 +26,7 @@ def parse_and_forward():
     }
 
     while (request.args.get('Location ' + (str(i))) is not None):
+        print "query string from UI: " + request.query_string
         print "Location " + (str(i)) + ": " + request.args.get('Location ' + (str(i)))
         name = "Location " + (str(i))
         body['name'] = name
@@ -43,7 +44,8 @@ def parse_and_forward():
             trip['others'].append(loc_id)
         trip['end'] = loc_id
         i += 1
-    trip['others'].pop()
+    if trip['others'] is not None:
+        trip['others'].pop()
     print trip
     trip_json = json.dumps(trip)
 
