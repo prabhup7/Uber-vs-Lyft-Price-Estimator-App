@@ -88,7 +88,7 @@ def get_distance():
                         e2 = long_list[j]
                         #print(s1,e1,s2,e2)
                         parameters = {
-                              'server_token': 'NgDT7eBNK2-e5TBiQ1kjN1nnGxA9xquK1XIZEg0J',
+                              'server_token': '<token>',
                               'start_latitude': float(s1),
                               'start_longitude': float(e1),
                               'end_latitude': float(s2),
