@@ -70,7 +70,7 @@ def getfromdb(source, dest, waypoints_list):
     url_waypoints = 'https://maps.googleapis.com/maps/api/directions/json?' + city + '&key=AIzaSyD6OzDVE_s67_JmJvfPHi28XDj8hLhaWMk'
     waypoints_response = requests.get(url_waypoints)
     print "way points route ++++++++++++++++++++++++++++++++++"
-    print waypoints_response
+    print json.dumps(waypoints_response.json())
 
     waypoints_response1 = waypoints_response.json()['routes'][0]['waypoint_order']
     # waypoints_response1= waypoints_response.json()['routes'][0]
@@ -318,6 +318,8 @@ def find_best_route(locations):
         "route": [
         ]
     }
+    print "------locations:"
+    print locations
     source = int(locations['start'].split('/')[2])
     dest = int(locations['end'].split('/')[2])
     waypoints_list = []

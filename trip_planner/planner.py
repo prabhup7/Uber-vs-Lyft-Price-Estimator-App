@@ -27,13 +27,18 @@ def plan(arg_body=None):
     uber_report = resp['uber']
     lyft_report = best_route.generate_lyft_report(best_route_by_costs)
     toRet = {
-        "start": arg_body['start'],
+        "start": arg_body['start'][2:],
         "best_route_by_costs": best_others,
-        "end": arg_body['end'],
+        "end": arg_body['end'][2:],
         "providers": [
             lyft_report
         ]
     }
     toRet['providers'].extend(uber_report)
-    print toRet
-    return render_result(toRet)
+
+    temp = toRet['best_route_by_costs']
+    toRet['best_route_by_costs'] = [toRet['start']]
+    toRet['best_route_by_costs'].extend(temp)
+    toRet['best_route_by_costs'].append(toRet['end'])
+    print json.dumps(toRet)
+    return toRet

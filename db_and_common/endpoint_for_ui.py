@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 def parse_and_forward():
     """Parses the parameters in query string
     and posts corresponding request(s) to /v1/location (inside location_api.location_app)"""
-    i = 1
+    i = 0
     body = {}
 
     start = None
@@ -38,7 +38,7 @@ def parse_and_forward():
 
         loc = location_api.location_app.persist(body=body)
         print loc.id
-        loc_id = '/v1/locations/' + str(loc.id)
+        loc_id = 'v1/locations/' + str(loc.id)
         if i == 0:
             trip['start'] = loc_id
         else:
@@ -54,8 +54,19 @@ def parse_and_forward():
     # requests.post(BASE_URI + '/trips', json=trip_json)  # or replace with direct functin call
 
 
+    best_route = []
     resp = trip_planner.planner.plan(trip_json)
-    return render_template('result.html', best_route_by_costs=resp['best_route_by_costs'], providers=resp['providers'])
+    for location_str in resp['best_route_by_costs']:
+        row = json.loads(location_api.location_app.queryDB(location_str.split('/')[2]).data)
+        loc_dict = {
+            "latitude": row['coordinate']['latitude'],
+            "longitude": row['coordinate']['longitude'],
+            "address": row['address']
+        }
+        best_route.append(loc_dict)
+        print json.dumps(best_route)
+
+    return render_template('result.html', best_route_by_costs=best_route, providers=resp['providers'])
 
     # return "Hello from locationApp, Gurnoor<br/> Query: " + request.query_string + \
     #        "<br/> location 0: " + request.args.get('Location 0')
