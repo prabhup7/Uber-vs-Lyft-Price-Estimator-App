@@ -20,6 +20,8 @@ places_dict={}
 waypoints_dict={}
 str1=[]
 sorted_ways_uber=[]
+output_list=[]
+sorted_ways_id=[]
 waypoints_list=[3,4,5]
 #source = start
 #dest = end
@@ -91,6 +93,8 @@ def findwaypoints(str2):
     for b in waypoints_response1:
         print b
         sorted_ways_uber.append([waypoints_dict[waypoints_list[b]]['latitude'],waypoints_dict[waypoints_list[b]]['longitude']])    
+        sorted_ways_id.append(waypoints_list[b])
+    print ("sorted id's",sorted_ways_id)
 
     for way in sorted_waypoint:
         for latlong in way:
@@ -98,6 +102,10 @@ def findwaypoints(str2):
     #print sorted_ways_uber    
     sorted_ways_uber.append([places_dict[dest]['latitude'],places_dict[dest]['longitude']])
     print ("optimized route coordinates",sorted_ways_uber);
+    for i in range(len(sorted_ways_id)):
+        output_list.append("/locations/"+str(sorted_ways_id[i]))
+
+    print output_list
     
 
 def get_distance():
@@ -179,6 +187,8 @@ def get_distance():
     print ("total uberpool cost",final_uberpool_cost);
     print ("total uberx cost",final_uberx_cost);
     print ("total uber xl cost",final_uberxl_cost);
+
+    
 
 
 if __name__ == "__main__":
