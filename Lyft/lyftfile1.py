@@ -61,7 +61,7 @@ end_location_lng = longitude[combo1[19][1]]
 #print end_location_lng
 
 estimate_cost = []
-
+--------------------------------------------------------getting the costs,distance and duration for all combinations of the 5 places
 for i in range(0,20):
     #print "The pair of addresses are"
     print combo1[i]
