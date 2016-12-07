@@ -1,15 +1,8 @@
-from flask import Flask, jsonify, Response, request
-from flask import render_template
-from model import db
-from model import app as application
-from model import createDB
-import requests
 import json
-import re
-import os
-from model import location
-from model import app as application
 
+import requests
+
+from model import location
 
 places=[]
 lat_dict={}
@@ -114,6 +107,9 @@ def get_distance():
     uber_dis_xcartype_distance = []
     uber_xl_cartype_lowestimate = []
     uber_dis_xcartype_lowestimate = []
+    uber_dis_pool_time = []
+    uber_xl_cartype_time = []
+    uber_dis_xcartype_time = []
     var= 0
     for another_value in range(1,len(sorted_ways_uber)):
 
@@ -159,6 +155,7 @@ def get_distance():
                 print ("uber pool distance",uber_dis_pool_distance)
                 print ("uber pool cost",uber_dis_pool_lowestimate)
                 final_uberpool_distance = sum(uber_dis_pool_distance)
+                uber_dis_pool_time.append(uber_final_res['prices'][0]['duration'])
                 
                 # for individual_distance_pool in uber_dis_pool_distance:
                 #     total_sum_distance = total_sum_distance + individual_distance_pool

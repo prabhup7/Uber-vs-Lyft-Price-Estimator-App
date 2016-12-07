@@ -1,10 +1,9 @@
+import sqlalchemy
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import sqlalchemy
-
 
 USER = 'root'
-PASSWORD = 'root'
+PASSWORD = '123'
 DATABASE = 'lab273'
 HOSTNAME = 'localhost'
 
@@ -42,6 +41,6 @@ def createDB():
     #engine = sqlalchemy.create_engine('mysql://root:123@localhost')  # connect to server
     engine = sqlalchemy.create_engine('mysql://%s:%s@%s'%(USER, PASSWORD, HOSTNAME))
     engine.execute("CREATE DATABASE IF NOT EXISTS %s ;" % (DATABASE))  # create db
-    engine.execute("USE location;")
+    engine.execute("USE lab273;")
     db.create_all()
     db.session.commit()
