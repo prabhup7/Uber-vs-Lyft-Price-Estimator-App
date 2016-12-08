@@ -1,5 +1,6 @@
 import urllib
 
+import grequests
 import requests
 from flask import json
 
@@ -59,6 +60,18 @@ def getfromdb(source, dest, waypoints_list):
         else:
             str1.append(waypoints_dict[key]['latitude'] + ',' + waypoints_dict[key]['longitude'])
         count = count + 1
+    # for i in range(0, (len(waypoints_list))):
+    #     rows3 = location.query.filter_by(id=waypoints_list[i]).first()
+    #     # waypoints_dict[rows3.id]['latitude']= rows3.latitude;
+    #     # waypoints_dict[rows3.id]['longitude']= rows3.longitude;
+    #     waypoints_dict[rows3.id] = {'latitude': rows3.latitude, 'longitude': rows3.longitude}
+    # print (waypoints_dict)
+    # for key in waypoints_dict:
+    #     if count < (len(waypoints_dict) - 1):
+    #         str1.append(waypoints_dict[key]['address'] + '|')
+    #     else:
+    #         str1.append(waypoints_dict[key]['address'] )
+    #     count = count + 1
     # print str1
     str2 = ''.join(str(e) for e in str1)
     print str2
@@ -67,6 +80,10 @@ def getfromdb(source, dest, waypoints_list):
     city = 'origin=' + str(places_dict[source]['latitude']) + ',' + str(
         places_dict[source]['longitude']) + '&destination=' + str(places_dict[dest]['latitude']) + ',' + str(
         places_dict[dest]['longitude']) + '&waypoints=optimize:true|' + str(str2)
+
+    # city = 'origin=' + str(places_dict[source]['address']) \
+    #        + '&destination=' + str(places_dict[dest]['address']) \
+    #        + '&waypoints=optimize:true|' + str(str2)
     print city
     url_waypoints = 'https://maps.googleapis.com/maps/api/directions/json?' + city + '&key=AIzaSyD6OzDVE_s67_JmJvfPHi28XDj8hLhaWMk'
 
@@ -110,6 +127,8 @@ def getfromdb(source, dest, waypoints_list):
     for b in waypoints_response1:
         print b
         print json.dumps(waypoints_dict)
+        # sorted_ways_uber.append([waypoints_dict[waypoints_list[b]]['latitude'],
+        #                          waypoints_dict[waypoints_list[b]]['longitude']])
         sorted_ways_uber.append([waypoints_dict[waypoints_list[b]]['latitude'],
                                  waypoints_dict[waypoints_list[b]]['longitude']])
         sorted_ways_id.append(waypoints_list[b])
@@ -440,10 +459,99 @@ def generate_lyft_report(locations):
         toRet['total_distance'] += cheapest['estimated_distance_miles']
         toRet['total_duration'] += cheapest['estimated_duration_seconds']
 
-    toRet['total_duration'] = toRet['total_duration'] / 60
+    toRet['total_duration'] = float("%.2f" % toRet['total_duration']) / 60
     toRet['total_costs_by_cheapest_car_type'] = toRet['total_costs_by_cheapest_car_type'] / 100  # convert cents to USD
 
     print toRet
+    return toRet
+
+
+def generate_lyft_report_async(locations):
+    """
+    Call Lyft API for the points in best_route_by_costs
+    :param [u'/v1/locations/51', u'/v1/locations/52', u'/v1/locations/53', u'/v1/locations/54']
+    :return: {
+            "name" : "Lyft",
+            "total_costs_by_cheapest_car_type" : 110,
+            "currency_code": "USD",
+            "total_duration" : 620,
+            "duration_unit": "minute",
+            "total_distance" : 25.05,
+            "distance_unit": "mile"
+        }
+    """
+
+    toRet = {
+        "name": "Lyft",
+        "total_costs_by_cheapest_car_type": 0,
+        "currency_code": "USD",
+        "total_duration": 0.0,
+        "duration_unit": "minute",
+        "total_distance": 0.0,
+        "distance_unit": "mile"
+    }
+    url_list = []
+
+    for i in range(0, len(locations) - 1):
+        loc_str = locations[i]
+        loc_id = loc_str.split('/')[2]
+        resp = location_api.location_app.queryDB(loc_id)
+        resp_json = json.loads(resp.data)
+
+        loc_str_end = locations[i + 1]
+        loc_id_end = loc_str_end.split('/')[2]
+        resp_end = location_api.location_app.queryDB(loc_id_end)
+        resp_json_end = json.loads(resp_end.data)
+
+        query_dict = {
+            "start_lat": resp_json['coordinate']['latitude'],
+            "start_lng": resp_json['coordinate']['longitude'],
+            "end_lat": resp_json_end['coordinate']['latitude'],
+            "end_lng": resp_json_end['coordinate']['longitude']
+        }
+        query_str = urllib.urlencode(query_dict)
+        # resp_lyft = requests.get(LYFT_BASE + query_str)
+        payload = {'start_lat': query_dict['start_lat'],
+                   'start_lng': query_dict['start_lng'],
+                   'end_lat': query_dict['end_lat'],
+                   'end_lng': query_dict['end_lng']
+                   }
+        auth = {'Authorization': "Bearer " + key.lyft_key}
+
+        url_list.append(grequests.get(LYFT_BASE, headers=auth, params=payload))
+
+    grequests.map(url_list)
+    # sleep(5)
+
+    for resp in url_list:
+        print resp
+        resp_json = resp.response.json()
+        print json.dumps(resp_json)
+        cost = resp_json["cost_estimates"][0]['estimated_cost_cents_max'] + resp_json["cost_estimates"][0][
+            'estimated_cost_cents_min']
+        cost = cost / 2
+        cheapest_car_cost = cost
+        cheapest_car_id = 0
+        i = 0
+        for option in resp_json["cost_estimates"]:
+            cost = option['estimated_cost_cents_max'] + option['estimated_cost_cents_min']
+            cost = cost / 2
+            if cost < cheapest_car_cost:
+                cheapest_car_id = i
+            i += 1
+
+        cheapest = resp_json["cost_estimates"][cheapest_car_id]
+        cost = cheapest['estimated_cost_cents_max'] + cheapest['estimated_cost_cents_min']
+        cost /= 2  # average
+        toRet['total_costs_by_cheapest_car_type'] += cost
+        toRet['total_distance'] += cheapest['estimated_distance_miles']
+        toRet['total_duration'] += cheapest['estimated_duration_seconds']
+
+        toRet['total_duration'] = toRet['total_duration'] / 60
+        toRet['total_costs_by_cheapest_car_type'] = int(
+            toRet['total_costs_by_cheapest_car_type']) / 100  # convert cents to USD
+
+    print json.dumps(toRet)
     return toRet
 
 
