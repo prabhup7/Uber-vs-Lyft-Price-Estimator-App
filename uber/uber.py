@@ -55,7 +55,7 @@ def getfromdb():
 def findwaypoints(str2):
     city ='origin='+str(places_dict[source]['latitude'])+','+str(places_dict[source]['longitude'])+'&destination='+str(places_dict[dest]['latitude'])+','+str(places_dict[dest]['longitude'])+'&waypoints=optimize:true|'+str(str2)
     print city
-    url_waypoints = 'https://maps.googleapis.com/maps/api/directions/json?'+city+'&key=AIzaSyD6OzDVE_s67_JmJvfPHi28XDj8hLhaWMk'
+    url_waypoints = 'https://maps.googleapis.com/maps/api/directions/json?'+city+'&key=<key>'
     waypoints_response = requests.get(url_waypoints)
     print "way points route ++++++++++++++++++++++++++++++++++"
     print waypoints_response
@@ -129,7 +129,7 @@ def get_distance():
             var = var + 1
             url_uber = 'https://api.uber.com/v1.2/estimates/price'
             parameters = {       
-            'server_token': 'NgDT7eBNK2-e5TBiQ1kjN1nnGxA9xquK1XIZEg0J',
+            'server_token': '<token>',
             'start_latitude':start_latitude ,
             'start_longitude':start_longitude,
             'end_latitude': end_latitude,

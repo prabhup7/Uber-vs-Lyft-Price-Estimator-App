@@ -7,29 +7,16 @@
 <script type="text/javascript">
     
     window.onload = function () {
-      var markers = [
-            {
-                "title": 'SFO',
-                "lat": '37.773972',
-                "lng": '-122.431297',
-
-            }
-        ,
-            {
-                "title": 'Downtown',
-                "lat": '37.279518',
-                "lng": '-121.867905',
-             }
-        ,
-              {
-                "title": 'town',
-                "lat": '38.279518',
-                "lng": '-121.867905',
-             }
-        ,
-           
+         var temp = {{ route|tojson }};
+         var markers = [];
+         for (i=0;i< Object.keys(temp).length;i++){
+            markers.push({'lat':temp[i].latitude,'lng':temp[i].longitude,'title':temp[i].address});
             
-    ];
+         //alert(temp[0].latitude);
+     }
+
+
+
         var mapOptions = {
             center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
             zoom: 10,
@@ -141,7 +128,7 @@ div{
             <h2><center>Best route</center></h2>
             <center>
                 {% for page in route %}
-                {{ page["address"]}}</br>
+                Location : {{ page["address"]}}</br>
                 {% endfor %}
             </center>
     </div>
@@ -162,21 +149,14 @@ div{
 </table>
 </center>
     </div>
-<div class="three">
-        <h2><center>Dangerous Streets</center></h2>
-        <center>{% for record in streets %}
-        {{record}}</br>
-        {% endfor %}</center>
-    </div>
+
 
 <div class="four">
      <h2><center>Weather</center></h2>
      <center>{% for record in weather %}
-        {{record}}</br>
+        Weather  : {{record}}</br>
         {% endfor %}</center>
     </div>
-
-
 
 
 </body>

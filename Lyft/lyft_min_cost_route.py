@@ -14,7 +14,7 @@ from a2m.itertools import *
 #2control over here
 
 
-
+#-------------------------------------Retrieving the lats and longs from db
 r = db.engine.execute('select lat from location')
 r2 = db.engine.execute('select longitude from location')
 
@@ -50,8 +50,10 @@ for i in range(0,5):
     pl_ind_lat_lng["lngs "] = longitude[i]
     #print pl_ind_lat_lng
 
-
+#-----------------------getting all pairs of locations
 combo1 = list(itertools.permutations([0,1,2,3,4], 2))
+
+
 #print combo1[1][0]
 #print combo1
 #print combo1
@@ -74,7 +76,7 @@ combo1 = list(itertools.permutations([0,1,2,3,4], 2))
 estimate_cost = []
 total_duration = []
 total_distance = []
-
+#--------------------------------------calculating the duration,cost and distance in the required format for each pair of places
 for i in range(0,20):
     #print "The pair of addresses are"
     print combo1[i]
@@ -150,7 +152,7 @@ for i in range(0,20):
     #print estimate_cost[i]
     print total_duration[i]
 
-
+#--------------------------------------finding all possible routes
 combo = list(itertools.permutations([0,1,3,4,5,6], 6))
 #print combo
 
@@ -481,7 +483,7 @@ print result6
 
 
 
-
+-----------------------------------------------#printing the optimized route
 #def determine():
 mincost = min(p1, p2, p3, p4, p5, p6)
 print mincost

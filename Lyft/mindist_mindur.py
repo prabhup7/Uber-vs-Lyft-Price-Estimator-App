@@ -13,6 +13,7 @@ from a2m.itertools import *
 
 r = db.engine.execute('select address from location')
 
+
 #r1 = db.engine.execute('select address from location where id = 1')
 #print r1
 
@@ -92,7 +93,7 @@ print combo1[19][0]
 
 distance = []
 duration = []
-
+#-------------------------------------------using the google API to retrieve the distances and duration for all combinations of routes between 5 places
 for i in range(0,20):
 
     print combo1[i]
@@ -378,7 +379,7 @@ print "The minimum total distance is"
 print p6
 print a
 print " "
-
+------------------------checking and retrieving the most optimized route with respect to minimum total distance
 if a == 'p1':
    print result1
 
@@ -407,7 +408,7 @@ b = min(enumerate(['a1', 'a2', 'a3', 'a4', 'a5', 'a6']), key=lambda x, ns=locals
 print "The minimum total duration is"
 print a6
 print b
-
+#------------------------------------------------checking and retrieving the most estimated costs according to the least time
 if b == 'a1':
    print result1
 

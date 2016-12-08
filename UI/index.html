@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+
     <script type='text/javascript'>
         function addFields(){
             // Number of inputs to create
@@ -12,12 +15,13 @@
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);
             }
-            for (i=0;i<number;i++){
+            for (i=1;i<=number;i++){
                 // Append a node with a random text
-                container.appendChild(document.createTextNode("Location " + (i+1) + "  "));
+                container.appendChild(document.createTextNode("Location " + (i) + "  "));
                 // Create an <input> element, set its type and name attributes
                 var input = document.createElement("input");
                 input.type = "text";
+                input.id = "Location"+i;
                 input.name = "Location " + i;
                 input.style = "color:black";
                 container.appendChild(input);
@@ -32,10 +36,24 @@
             btn.onclick = "document.getElementById('myForm').submit();";
             container.appendChild(btn);
 
-               
+            
+            
+            //google.maps.event.addDomListener(window, 'load', function () {
+            for(var i=1;i<=number;i++){
+            var places = new google.maps.places.Autocomplete(document.getElementById('Location'+i));
+            google.maps.event.addListener(places, 'place_changed', function () {
+                var place = places.getPlace();
+                var address = place.formatted_address;
 
+            });}
+        //});
+           
         }
     </script>
+
+
+
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -169,13 +187,13 @@
 
     
     <aside class="bg-dark">
-        <div class="container text-center">
+        <div id= "containern" class="container text-center">
             <div class="call-to-action">
                 
 
       Number of Locations: (max. 5)<br/><input type="text" id="member" name="member" value="" style = "color:black;"><br />
       <br>
-    <a href="#" class="btn btn-default btn-xl sr-button" id="filldetails" onclick="addFields()">Submit</a>
+    <a href="#containern" class="btn btn-default btn-xl sr-button" id="filldetails" onclick="addFields()">Submit</a>
     <br/><br/><br/>
                 <form id="myForm" action="http://127.0.0.1:5009/ui">
     <div id="container"/><br/><br/>
