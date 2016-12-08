@@ -98,7 +98,7 @@ toRet = {
 }
 
 
-def generate_lyft_report(locations):
+def generate_lyft_report_async(locations):
     """
     Call Lyft API for the points in best_route_by_costs
     :param [u'/v1/locations/51', u'/v1/locations/52', u'/v1/locations/53', u'/v1/locations/54']
@@ -145,10 +145,11 @@ def generate_lyft_report(locations):
 
     grequests.map(url_list)
     # sleep(5)
+
     for resp in url_list:
         print resp
-        resp_json = resp.jso()
-        print json.dumps(resp_lyft)
+        resp_json = resp.response.json()
+        print json.dumps(resp_json)
         cost = resp_json["cost_estimates"][0]['estimated_cost_cents_max'] + resp_json["cost_estimates"][0][
             'estimated_cost_cents_min']
         cost = cost / 2
@@ -169,13 +170,12 @@ def generate_lyft_report(locations):
         toRet['total_distance'] += cheapest['estimated_distance_miles']
         toRet['total_duration'] += cheapest['estimated_duration_seconds']
 
+        toRet['total_duration'] = float("%.2f" % toRet['total_duration']) / 60
+        toRet['total_costs_by_cheapest_car_type'] = toRet[
+                                                        'total_costs_by_cheapest_car_type'] / 100  # convert cents to USD
 
-
-        # toRet['total_duration'] = float("%.2f" % toRet['total_duration']) / 60
-        # toRet['total_costs_by_cheapest_car_type'] = toRet['total_costs_by_cheapest_car_type'] / 100  # convert cents to USD
-
-        # print toRet
-        # return toRet
+    print json.dumps(toRet)
+    return toRet
 
 
 if __name__ == '__main__':
@@ -200,4 +200,4 @@ if __name__ == '__main__':
         "/locations/6",
         "/locations/7",
     ]
-    generate_lyft_report(best_route)
+    generate_lyft_report_async(best_route)

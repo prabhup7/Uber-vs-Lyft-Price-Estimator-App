@@ -25,7 +25,7 @@ def plan(arg_body=None):
 
     # uber_report = best_route.generate_uber_report(best_route_by_costs)
     uber_report = resp['uber']
-    lyft_report = best_route.generate_lyft_report(best_route_by_costs)
+    lyft_report = best_route.generate_lyft_report_async(best_route_by_costs)
     toRet = {
         "start": arg_body['start'][2:],
         "best_route_by_costs": best_others,

@@ -11,7 +11,7 @@
          var markers = [];
          for (i=0;i< Object.keys(temp).length;i++){
             markers.push({'lat':temp[i].latitude,'lng':temp[i].longitude,'title':temp[i].address});
-            
+
          //alert(temp[0].latitude);
      }
 
@@ -45,18 +45,18 @@
         }
         map.setCenter(latlngbounds.getCenter());
         map.fitBounds(latlngbounds);
- 
+
         //***********ROUTING****************//
- 
+
         //Initialize the Path Array
         var path = new google.maps.MVCArray();
- 
+
         //Initialize the Direction Service
         var service = new google.maps.DirectionsService();
- 
+
         //Set the Path Stroke Color
         var poly = new google.maps.Polyline({ map: map, strokeColor: '#4986E7' });
- 
+
         //Loop and Draw Path Route between the Points on MAP
         for (var i = 0; i < lat_lng.length; i++) {
             if ((i + 1) < lat_lng.length) {
@@ -123,7 +123,7 @@ div{
   <body bgcolor = "#909090">
     <header>
   <h1><center>Trip Planner </center</h1>  </header>
-  
+
     <div class="one">
             <h2><center>Best route</center></h2>
             <center>
@@ -135,7 +135,6 @@ div{
 
 <div id="dvMap" style="width: 70%; height: 500px">
 </div>
-    
 
 
     <div class="two">
@@ -145,11 +144,19 @@ div{
 <tr><td>Name</td><td>Distance</td><td>Duration</td><td>Cost</td></tr>
 {% for record in providers %}
 <tr><td>{{record["name"]}}</td><td>{{record["total_distance"]}}miles</td><td>{{record["total_duration"]}}minutes</td><td>{{record["cost"]}}$</td></tr>
-{% endfor %} 
+    {% endfor %}
 </table>
 </center>
     </div>
-
+    <div class="three">
+        <h2>
+            <center>Dangerous Streets</center>
+        </h2>
+        <center>{% for record in streets %}
+            Dangerous Streets : {{record}}</br>
+            {% endfor %}
+        </center>
+    </div>
 
 <div class="four">
      <h2><center>Weather</center></h2>
@@ -158,7 +165,10 @@ div{
         {% endfor %}</center>
     </div>
 
+    <script>
+my()
 
+    </script>
 </body>
 
 </html>

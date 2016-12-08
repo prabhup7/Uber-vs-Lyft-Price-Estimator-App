@@ -1,6 +1,11 @@
+from time import time
+
 from flask import request, json, render_template
 from flask_sqlalchemy import SQLAlchemy
 
+import features.crime
+import features.popular
+import features.weather
 import location_api.location_app
 import trip_planner.planner
 from db_and_common import app
@@ -15,7 +20,7 @@ db = SQLAlchemy(app)
 def parse_and_forward():
     """Parses the parameters in query string
     and posts corresponding request(s) to /v1/location (inside location_api.location_app)"""
-    i = 0
+    i = 1
     body = {}
 
     start = None
@@ -39,7 +44,7 @@ def parse_and_forward():
         loc = location_api.location_app.persist(body=body)
         print loc.id
         loc_id = 'v1/locations/' + str(loc.id)
-        if i == 0:
+        if i == 1:
             trip['start'] = loc_id
         else:
             trip['others'].append(loc_id)
@@ -66,7 +71,17 @@ def parse_and_forward():
         best_route.append(loc_dict)
         print json.dumps(best_route)
 
-    return render_template('result.html', best_route_by_costs=best_route, providers=resp['providers'])
+    # TODO: handle no responses from APIs
+
+    time_start = time()
+    weather = features.weather.get_weathers(best_route)['descriptions']
+    # dangerous_streets = features.crime.get_streets(best_route)
+    # popular = features.popular.get_popular(best_route)
+    print time() - time_start
+    return render_template('result.html', route=best_route,
+                           providers=resp['providers'],
+                           route1=json.dumps(best_route),
+                           weather=weather)
 
     # return "Hello from locationApp, Gurnoor<br/> Query: " + request.query_string + \
     #        "<br/> location 0: " + request.args.get('Location 0')
